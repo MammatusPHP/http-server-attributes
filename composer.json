@@ -1,0 +1,39 @@
+{
+  "name": "mammatus/http-server-attributes",
+  "description": "HTTP Server Attributes",
+  "license": "MIT",
+  "require": {
+    "php": "^8.4"
+  },
+  "require-dev": {
+    "wyrihaximus/makefiles": "^0.7.10",
+    "wyrihaximus/test-utilities": "^8.6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mammatus\\Http\\Server\\Attributes\\": "src/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "ergebnis/composer-normalize": true,
+      "infection/extension-installer": true,
+      "phpstan/extension-installer": true,
+      "wyrihaximus/makefiles": true,
+      "wyrihaximus/test-utilities": true
+    },
+    "platform": {
+      "php": "8.4.13"
+    },
+    "sort-packages": true
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "make on-install-or-update || true"
+    ],
+    "post-update-cmd": [
+      "make on-install-or-update || true"
+    ]
+  }
+}

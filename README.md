@@ -1,2 +1,2 @@
-# http-server-attributes
-Attributes for http-server
+# http-server-annotations
+Annotations for the http-server
