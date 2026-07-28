@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mammatus\Http\Server\Attributes;
 
+/** @api */
 enum ProbeType: string
 {
     case StartUp   = 'startup';

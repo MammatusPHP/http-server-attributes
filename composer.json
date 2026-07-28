@@ -6,8 +6,8 @@
     "php": "^8.4"
   },
   "require-dev": {
-    "wyrihaximus/makefiles": "^0.7.15",
-    "wyrihaximus/test-utilities": "^8.7.0"
+    "wyrihaximus/makefiles": "^0.13.2",
+    "wyrihaximus/test-utilities": "^13.4.0"
   },
   "autoload": {
     "psr-4": {
