@@ -1,6 +1,6 @@
 {
   "name": "mammatus/http-server-attributes",
-  "description": "HTTP Server Attributes",
+  "description": "Attributes for the HTTP server",
   "license": "MIT",
   "require": {
     "php": "^8.4"
