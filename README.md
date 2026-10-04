@@ -6,7 +6,7 @@
 [![Type Coverage](https://shepherd.dev/github/mammatusphp/http-server-attributes/coverage.svg)](https://shepherd.dev/github/mammatusphp/http-server-attributes)
 [![License](https://poser.pugx.org/mammatus/http-server-attributes/license.png)](https://packagist.org/packages/mammatus/http-server-attributes)
 
-PHP 8 attributes for HTTP routes, health probes, vhosts, and WebSocket channels and RPC. Use them on handler classes in apps built with [mammatus/http-server](https://github.com/MammatusPHP/http-server); its Composer plugin reads these attributes when autoload is dumped and generates routing configuration.
+PHP 8 attributes for HTTP routes, health probes, vhosts, and WebSocket channels, RPC, heartbeat, and client assets. Use them on handler classes in apps built with [mammatus/http-server](https://github.com/MammatusPHP/http-server); its Composer plugin reads these attributes when autoload is dumped and generates routing configuration.
 
 # Install
 
@@ -81,16 +81,39 @@ final readonly class OrderPlacedHandler
 }
 ```
 
+# WebSocket
+
+Attributes in [`Mammatus\Http\Server\Attributes\WebSocket`](src/WebSocket) configure vhosts, broadcast channels, heartbeat, client assets, and RPC methods. Put [`HeartbeatChannel`](src/WebSocket/HeartbeatChannel.php), [`HeartbeatInterval`](src/WebSocket/HeartbeatInterval.php), and [`ServeClientAsset`](src/WebSocket/ServeClientAsset.php) on the vhost class. Put [`Channel`](src/WebSocket/Channel.php) on channel payload or broadcaster classes. Put [`Rpc`](src/WebSocket/Rpc.php) on handler methods.
+
+Combined vhost:
+
+```php
+use Mammatus\Http\Server\Attributes\Vhost;
+use Mammatus\Http\Server\Attributes\WebSocket\HeartbeatChannel;
+use Mammatus\Http\Server\Attributes\WebSocket\HeartbeatInterval;
+use Mammatus\Http\Server\Attributes\WebSocket\ServeClientAsset;
+
+#[Vhost('frontend')]
+#[ServeClientAsset]
+#[HeartbeatChannel('heartbeat')]
+#[HeartbeatInterval(seconds: 30.0)]
+final readonly class FrontendVhost
+{
+}
+```
+
 ## WebSocket Channel
 
-Class-level, repeatable. Registers a broadcast channel name and optional payload class; when `payloadClass` is omitted or empty, the annotated class is the payload type.
+Class-level, repeatable. Registers a broadcast `$channel` and `$payloadClass` (both required). See [`Channel`](src/WebSocket/Channel.php).
+
+When the annotated class is the payload type, pass `self::class`:
 
 ```php
 use Mammatus\Http\Server\Attributes\Vhost;
 use Mammatus\Http\Server\Attributes\WebSocket\Channel;
 
 #[Vhost('frontend')]
-#[Channel('demo-events')]
+#[Channel('demo-events', self::class)]
 final readonly class WebSocketDemoEvent
 {
     public function __construct(public string $message)
@@ -99,18 +122,51 @@ final readonly class WebSocketDemoEvent
 }
 ```
 
-With an explicit payload class:
+Separate broadcaster and payload:
 
 ```php
-#[Channel('events', 'App\\WebSocket\\EventPayload')]
+#[Channel('events', EventPayload::class)]
 final readonly class EventBroadcaster
+{
+}
+```
+
+## WebSocket HeartbeatChannel
+
+Class-level. Sets the broadcast channel name used for WebSocket heartbeat traffic. See [`HeartbeatChannel`](src/WebSocket/HeartbeatChannel.php).
+
+```php
+#[HeartbeatChannel('heartbeat')]
+final readonly class FrontendVhost
+{
+}
+```
+
+## WebSocket HeartbeatInterval
+
+Class-level. Sets the WebSocket heartbeat interval in seconds. Omit the attribute to use the server default. See [`HeartbeatInterval`](src/WebSocket/HeartbeatInterval.php).
+
+```php
+#[HeartbeatInterval(seconds: 30.0)]
+final readonly class FrontendVhost
+{
+}
+```
+
+## WebSocket ServeClientAsset
+
+Class-level marker on a vhost class. Tells the [mammatus/http-server](https://github.com/MammatusPHP/http-server) plugin to serve bundled WebSocket client assets for that vhost. See [`ServeClientAsset`](src/WebSocket/ServeClientAsset.php).
+
+```php
+#[ServeClientAsset]
+final readonly class FrontendVhost
 {
 }
 ```
 
 ## WebSocket Rpc
 
-Method-level, repeatable. JSON-RPC-style method name on WebSocket handlers. [mammatus/http-server](https://github.com/MammatusPHP/http-server) accepts `(ServerRequestInterface $upgradeRequest)` with a named return type, or `($params, ServerRequestInterface $upgradeRequest)` where `$params` is a user DTO class. See [Collector](https://github.com/MammatusPHP/http-server/blob/master/src/Composer/Collector.php).
+Method-level, repeatable. JSON-RPC-style method name on WebSocket handlers. See [`Rpc`](src/WebSocket/Rpc.php). [mammatus/http-server](https://github.com/MammatusPHP/http-server) accepts `(ServerRequestInterface $upgradeRequest)` with a named return type, or `($params, ServerRequestInterface $upgradeRequest)` where `$params` is a user DTO class. See [Collector](https://github.com/MammatusPHP/http-server/blob/master/src/Composer/Collector.php).
 
 ```php
 use Mammatus\Http\Server\Attributes\Vhost;
