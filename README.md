@@ -70,7 +70,7 @@ See [healthz-vhost](https://github.com/MammatusPHP/healthz-vhost) for full probe
 
 ## Bus
 
-Class-level marker with a bus name (successor to [http-server-annotations Bus](https://github.com/MammatusPHP/http-server-annotations/blob/main/src/Bus.php)). Not consumed by [mammatus/http-server](https://github.com/MammatusPHP/http-server) today.
+Class-level marker with a bus name (successor to [http-server-annotations Bus](https://github.com/MammatusPHP/http-server-annotations/blob/master/src/Bus.php)). Not consumed by [mammatus/http-server](https://github.com/MammatusPHP/http-server) today.
 
 ```php
 use Mammatus\Http\Server\Attributes\Bus;
@@ -110,7 +110,7 @@ final readonly class EventBroadcaster
 
 ## WebSocket Rpc
 
-Method-level, repeatable. JSON-RPC-style method name on WebSocket handlers. [mammatus/http-server](https://github.com/MammatusPHP/http-server) accepts `(ServerRequestInterface $upgradeRequest)` with a named return type, or `($params, ServerRequestInterface $upgradeRequest)` where `$params` is a user DTO class. See [Collector](https://github.com/MammatusPHP/http-server/blob/main/src/Composer/Collector.php).
+Method-level, repeatable. JSON-RPC-style method name on WebSocket handlers. [mammatus/http-server](https://github.com/MammatusPHP/http-server) accepts `(ServerRequestInterface $upgradeRequest)` with a named return type, or `($params, ServerRequestInterface $upgradeRequest)` where `$params` is a user DTO class. See [Collector](https://github.com/MammatusPHP/http-server/blob/master/src/Composer/Collector.php).
 
 ```php
 use Mammatus\Http\Server\Attributes\Vhost;
@@ -128,7 +128,7 @@ final readonly class WebSocketPingHandler
 }
 ```
 
-More examples: [WebSocketPingHandler](https://github.com/MammatusPHP/http-server/blob/main/etc/dev-app/WebSocketPingHandler.php), [PingHandler](https://github.com/MammatusPHP/http-server/blob/main/etc/dev-app/PingHandler.php).
+More examples in the http-server dev app: [PingHandler](https://github.com/MammatusPHP/http-server/blob/master/etc/dev-app/PingHandler.php).
 
 # License
 
