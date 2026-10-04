@@ -1,6 +1,6 @@
 {
   "name": "mammatus/http-server-attributes",
-  "description": "Attributes for the HTTP server",
+  "description": "HTTP server and WebSocket PHP attributes for mammatus/http-server",
   "license": "MIT",
   "require": {
     "php": "^8.4"

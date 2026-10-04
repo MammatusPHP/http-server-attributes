@@ -10,7 +10,6 @@ use Attribute;
 final readonly class HeartbeatInterval
 {
     public function __construct(
-        public bool $enabled,
         public float $seconds,
     ) {
     }
